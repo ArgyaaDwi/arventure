@@ -5,6 +5,7 @@ import { fetchProvinceById, updateProvince } from "@/utils/supabase/city/crud";
 import { Card, Group, Text, TextInput } from "@mantine/core";
 const EditProvincePage = () => {
   const router = useRouter();
+
   const searchParams = useSearchParams();
   const provinceId = searchParams.get("provinceId");
   const [provinceName, setProvinceName] = useState("");

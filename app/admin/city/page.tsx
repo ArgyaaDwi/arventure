@@ -1,6 +1,7 @@
 // pages/admin.tsx
 "use client";
 import classNames from "classnames";
+import { Suspense } from "react";
 import React from "react";
 import { Table } from "@mantine/core";
 import TableDemo from "@/app/admin/city/components/table";
@@ -17,8 +18,8 @@ export default function City() {
 
   return (
     <div className="">
-       <Card withBorder shadow="sm" radius="md">
-        <Card.Section withBorder inheritPadding >
+      <Card withBorder shadow="sm" radius="md">
+        <Card.Section withBorder inheritPadding>
           <Group justify="space-between">
             <Text fw={700} size="xl">
               Province Page
@@ -32,9 +33,10 @@ export default function City() {
           </Group>
         </Card.Section>
         <br />
-        <TableDemo />
+        <Suspense fallback={<div>Loading...</div>}>
+          <TableDemo />
+        </Suspense>
       </Card>
-
     </div>
   );
 }
