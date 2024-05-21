@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchProvinceById, updateProvince } from "@/utils/supabase/city/crud";
 import { Card, Group, Text, TextInput } from "@mantine/core";
+import { Suspense } from "react";
 const EditProvincePage = () => {
   const router = useRouter();
 
@@ -40,7 +41,10 @@ const EditProvincePage = () => {
   };
 
   return (
+
     <div>
+       <Suspense fallback={<div>Loading...</div>}>
+
       <Card withBorder shadow="sm" radius="md">
         <Card.Section withBorder inheritPadding py="xs">
           <Group justify="space-between">
@@ -77,6 +81,7 @@ const EditProvincePage = () => {
           </button>{" "}
         </form>
       </Card>
+       </Suspense>
     </div>
   );
 };

@@ -33,9 +33,8 @@ export default function City() {
           </Group>
         </Card.Section>
         <br />
-        <Suspense fallback={<div>Loading...</div>}>
+       
           <TableDemo />
-        </Suspense>
       </Card>
     </div>
   );
