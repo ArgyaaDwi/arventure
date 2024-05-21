@@ -4,11 +4,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { fetchProvinceById, updateProvince } from "@/utils/supabase/city/crud";
 import { Card, Group, Text, TextInput } from "@mantine/core";
 import { Suspense } from "react";
-const EditProvincePage = () => {
+const EditProvincePage = ({ searchParams }: { searchParams: any }) => {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-  const provinceId = searchParams.get("provinceId");
+  // console.log("search param", searchParams.provinceId);
+
+  // const searchParams = useSearchParams();
+  // const provinceId = searchParams.get("provinceId");
+  const provinceId = searchParams.provinceId;
   const [provinceName, setProvinceName] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -41,47 +44,45 @@ const EditProvincePage = () => {
   };
 
   return (
-
     <div>
-       <Suspense fallback={<div>Loading...</div>}>
-
-      <Card withBorder shadow="sm" radius="md">
-        <Card.Section withBorder inheritPadding py="xs">
-          <Group justify="space-between">
-            <Text fw={700} size="xl">
-              Edit Province
-            </Text>
-          </Group>
-        </Card.Section>
-        <br />
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="provinceName">Province Name:</label>
-            <TextInput
-              id="provinceName"
-              value={provinceName}
-              onChange={(e) => setProvinceName(e.target.value)}
-              required
-            />
-          </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Card withBorder shadow="sm" radius="md">
+          <Card.Section withBorder inheritPadding py="xs">
+            <Group justify="space-between">
+              <Text fw={700} size="xl">
+                Edit Province
+              </Text>
+            </Group>
+          </Card.Section>
           <br />
-          {error && <p>Error: {error}</p>}
-          <button
-            type="button"
-            className="bg-white text-black border border-black rounded-md px-4 py-2 my-3 mr-2"
-            onClick={() => (window.location.href = "/admin/city")}
-          >
-            Back
-          </button>
-          <button
-            type="submit"
-            className="bg-black text-white rounded-md px-4 py-2 my-3 "
-          >
-            Update
-          </button>{" "}
-        </form>
-      </Card>
-       </Suspense>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="provinceName">Province Name:</label>
+              <TextInput
+                id="provinceName"
+                value={provinceName}
+                onChange={(e) => setProvinceName(e.target.value)}
+                required
+              />
+            </div>
+            <br />
+            {error && <p>Error: {error}</p>}
+            <button
+              type="button"
+              className="bg-white text-black border border-black rounded-md px-4 py-2 my-3 mr-2"
+              onClick={() => (window.location.href = "/admin/city")}
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              className="bg-black text-white rounded-md px-4 py-2 my-3 "
+            >
+              Update
+            </button>{" "}
+          </form>
+        </Card>
+      </Suspense>
     </div>
   );
 };
