@@ -19,6 +19,8 @@ import { fetchAllProvinces } from "@/utils/supabase/city/crud";
 
 export default function AddMountainPage() {
   const [name, setMountainName] = useState("");
+  const [description, setDescription] = useState("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [idProvince, setIdProvinceName] = useState("");
   const [image, setImage] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -74,7 +76,7 @@ export default function AddMountainPage() {
         imageUrl = data.secure_url;
       }
 
-      await addMountains(name, selectedProvince.value, imageUrl);
+      await addMountains(name, selectedProvince.value ,  description,imageUrl);
       setShowSuccess(true);
       setShowError(false);
       setTimeout(() => {
@@ -127,6 +129,15 @@ export default function AddMountainPage() {
               data={provinces}
               value={selectedProvince.value}
               onChange={(_value, option) => setSelectedProvince(option)}
+            />
+          </div>
+          <div>
+            <label htmlFor="idProvince">Description:</label>
+            <TextInput
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
             />
           </div>
           <div>

@@ -17,9 +17,9 @@ export const fetchAllMountains = async () => {
   
   return mountains;
 };
-export const addMountains = async (name: string, idProvince:string, image: string) => {
+export const addMountains = async (name: string, idProvince:string, description: string, image: string) => {
   const supabase = createClient();
-  const { data, error } = await supabase.from('mountain').insert({ name, idProvince, image });
+  const { data, error } = await supabase.from('mountain').insert({ name, idProvince, description,image });
   if (error) {
     throw new Error(error.message);
   }
@@ -41,11 +41,11 @@ export const fetchMountainById = async (id: string) => {
 
   return mountains;
 };
-export const updateMountain = async (id: string, name: string, idProvince: string, image: string) => {
+export const updateMountain = async (id: string, name: string, idProvince: string, description : string,image: string, isOpen: boolean) => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('mountain')
-    .update({ name, idProvince, image })
+    .update({ name, idProvince, description,image, isOpen })
     .eq('id', id);
 
   if (error) {

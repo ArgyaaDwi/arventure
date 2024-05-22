@@ -46,11 +46,11 @@ export const SIDENAV_ITEMS: SideNavItemGroup[] = [
         path: "/admin/user",
         icon: <UsersRound size={20}></UsersRound>,
       },
-      {
-        title: "Reviews",
-        path: "/admin/review",
-        icon: <MessageCircleMore size={20}></MessageCircleMore>,
-      },
+      // {
+      //   title: "Reviews",
+      //   path: "/admin/review",
+      //   icon: <MessageCircleMore size={20}></MessageCircleMore>,
+      // },
     ],
   },
 ];

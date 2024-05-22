@@ -1,8 +1,5 @@
 "use client";
-import {
-  IconHeart,
-  IconMessage,
-} from "@tabler/icons-react";
+import { IconHeart, IconMessage } from "@tabler/icons-react";
 import {
   Card,
   Image,
@@ -36,11 +33,19 @@ export function ArticleCard({ mountain }: { mountain: any }) {
         </a>
       </Card.Section>
 
-      {mountain.status === "closed" && (  
+      {mountain.isOpen ? (
         <Badge
           className={classes.rating}
           variant="gradient"
-          gradient={{ from: "yellow", to: "red" }}
+          gradient={{ from: "green", to: "blue" }}
+        >
+          OPEN
+        </Badge>
+      ) : (
+        <Badge
+          className={classes.rating}
+          variant="gradient"
+          gradient={{ from: "gray", to: "black" }}
         >
           CLOSED
         </Badge>
@@ -56,20 +61,17 @@ export function ArticleCard({ mountain }: { mountain: any }) {
       <Group justify="space-between" className={classes.footer}>
         <Center></Center>
         <Group gap={8} mr={0}>
-          <ActionIcon className={classes.action}>
+          {/* <ActionIcon className={classes.action}>
             <EyeIcon style={{ width: rem(16), height: rem(16) }} />
-          </ActionIcon>
+          </ActionIcon> */}
           <ActionIcon className={classes.action}>
             <IconHeart style={{ width: rem(16), height: rem(16) }} />
           </ActionIcon>
-          <ActionIcon className={classes.action}>
+          {/* <ActionIcon className={classes.action}>
             <IconMessage style={{ width: rem(16), height: rem(16) }} />
-          </ActionIcon>
+          </ActionIcon> */}
         </Group>
       </Group>
     </Card>
   );
 }
-
-
-

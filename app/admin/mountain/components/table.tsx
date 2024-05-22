@@ -93,7 +93,7 @@ export default function MountainTable() {
         setSelectedMountainId(null);
       }
 
-      window.location.reload();
+      window.location.reload
       console.log("diroute sini");
     } catch (err: any) {
       setError(err.message);
@@ -114,6 +114,9 @@ export default function MountainTable() {
             <TableHead className="border border-gray-300 text-black text-center">
               Province
             </TableHead>
+            {/* <TableHead className="border border-gray-300 text-black text-center">
+              Description
+            </TableHead> */}
             <TableHead className="border border-gray-300 text-black text-center">
               Image
             </TableHead>
@@ -137,6 +140,9 @@ export default function MountainTable() {
               <TableCell className="border border-gray-300 text-center">
                 {mountain.provinceName}
               </TableCell>
+              {/* <TableCell className="border border-gray-300 text-center">
+                {mountain.description}
+              </TableCell> */}
               <TableCell className="border border-gray-300 text-center">
                 <Image
                   src={mountain.image}

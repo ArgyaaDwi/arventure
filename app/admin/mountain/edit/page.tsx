@@ -1,4 +1,3 @@
-
 // "use client";
 // import {
 //   Card,
@@ -180,6 +179,7 @@ import {
   TextInput,
   Select,
   FileInput,
+  Textarea,
 } from "@mantine/core";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -193,15 +193,18 @@ interface EditMountainPageProps {
   searchParams: { id: string };
 }
 
-const EditMountainPage: React.FC<EditMountainPageProps> = ({ searchParams }) => {
-  const router = useRouter();
+const EditMountainPage: React.FC<EditMountainPageProps> = ({
+  searchParams,
+}) => {
+  const router = useRouter();   
   const id = searchParams.id;
 
   const [name, setMountainName] = useState("");
+  const [description, setDescription] = useState("");
   const [idProvince, setIdProvinceName] = useState("");
   const [image, setImage] = useState("");
   const [error, setError] = useState<string | null>(null);
-
+  const [isOpen, setIsOpen] = useState<boolean | null>(null);
   const [provinces, setProvinces] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -224,6 +227,9 @@ const EditMountainPage: React.FC<EditMountainPageProps> = ({ searchParams }) => 
           console.log("Fetched mountain data:", mountainData);
 
           setMountainName(mountainData.name);
+          setDescription(mountainData.description);
+          setIsOpen(mountainData.isOpen);
+
           setSelectedProvince({
             value: mountainData.idProvince,
             label: mountainData.provinceName,
@@ -266,7 +272,15 @@ const EditMountainPage: React.FC<EditMountainPageProps> = ({ searchParams }) => 
         imageUrl = data.secure_url;
       }
 
-      await updateMountain(id, name, selectedProvince.value, imageUrl);
+      await updateMountain(
+        id,
+        name,
+        selectedProvince.value,
+        description,
+        imageUrl,
+        isOpen!
+
+      );
       alert("Mountain updated successfully!");
       router.push("/admin/mountain");
     } catch (err: any) {
@@ -304,12 +318,33 @@ const EditMountainPage: React.FC<EditMountainPageProps> = ({ searchParams }) => 
             />
           </div>
           <div>
+            <label htmlFor="description">Description:</label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </div>
+          <div>
             <FileInput
               accept="image/png,image/jpeg"
               label="Upload Image"
               placeholder="Upload Image"
               value={file}
               onChange={setFile}
+            />
+          </div>
+          <div>
+            <label htmlFor="isOpen">Status:</label>
+            <Select
+              data={[
+                { value: "true", label: "Open" },
+                { value: "false", label: "Closed" },
+              ]}
+              value={isOpen?.toString() || ""}
+              onChange={(value) => setIsOpen(value === "true")}
+              required
             />
           </div>
           <br />

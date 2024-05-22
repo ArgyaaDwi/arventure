@@ -18,7 +18,7 @@ export default function Demo() {
         if (authUser) {
           const user = await getUsers(authUser.id);
           console.log("auth user", authUser);
-          console.log("user", user);
+          console.log("user", user);  
           setUserName(authUser.email);
           setName(user.name);
         }
