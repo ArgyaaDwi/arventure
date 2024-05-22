@@ -12,6 +12,64 @@ export const fetchAllUsers = async () => {
   console.log("Fetched total users:", users.length);
   return users;
 };
+export const fetchViewUsers = async () => {
+  const supabase = createClient();
+  const { data: users, error } = await supabase.from('user_views').select('*');
+  if (error) {
+    console.error("Error fetching users:", error.message);
+    throw new Error(error.message);
+  }
+  console.log("Fetched users:", users);
+  console.log("Fetched total users:", users.length);
+  return users;
+};
+// interface User {
+//   id: string;
+//   name: string;
+//   email: string;
+//   city: string;
+// }
+
+// export const fetchAllUsers = async (): Promise<User[]> => {
+//   const supabase = createClient();
+
+//   const { data, error } = await supabase
+//     .from('users')
+//     .select(`
+//       id,
+//       name,
+//       city,
+//       auth.users (email)
+//     `);
+
+//   if (error) {
+//     console.error("Error fetching users:", error.message);
+//     throw new Error(error.message);
+//   }
+
+//   // Ensure data is defined and properly formatted
+//   if (!data) {
+//     throw new Error("No data returned from query");
+//   }
+
+//   const formattedData: User[] = data.map((user: any) => {
+//     // Validate structure of the user object
+//     if (!user.id || !user.name || !user.city || !user.auth || !user.auth.email) {
+//       throw new Error("Invalid user data structure");
+//     }
+
+//     return {
+//       id: user.id,
+//       name: user.name,
+//       city: user.city,
+//       email: user.auth.email,
+//     };
+//   });
+
+//   console.log("Fetched users:", formattedData);
+//   console.log("Fetched total users:", formattedData.length);
+//   return formattedData;
+// };
 
 export const addUsers = async (name: string, idProvince:string, image: string) => {
   const supabase = createClient();

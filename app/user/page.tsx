@@ -55,12 +55,14 @@
 //   );
 // }
 // pages/user/page.tsx
-'use client';
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
-import { getCurrentUser, getUsers } from '@/utils/supabase/auth';
-
+"use client";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+import { getCurrentUser, getUsers } from "@/utils/supabase/auth";
+import { FeaturesCards } from "./components/Feature";
+import  ImageActionBanner  from "./components/Banner";
+import { ContactUs } from "./components/ContactUs";
 const UserPage = () => {
   const [userName, setUserName] = useState<any>(null);
   const router = useRouter();
@@ -70,12 +72,12 @@ const UserPage = () => {
       try {
         const authUser = await getCurrentUser();
         const user = await getUsers(authUser!.id);
-        console.log('auth user', authUser);
-        console.log('user', user);
+        console.log("auth user", authUser);
+        console.log("user", user);
         setUserName(authUser!.email);
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setUserName('Error');
+        console.error("Error fetching user data:", error);
+        setUserName("Error");
       }
     };
     fetchUser();
@@ -93,11 +95,9 @@ const UserPage = () => {
 
   return (
     <div>
-      <h1>Halo </h1>
-      <span className="font-semibold text-sm">{userName}</span>
-      <button onClick={handleLogout} className="p-2 bg-red-500 text-white rounded">
-        Logout
-      </button>
+      <ImageActionBanner />
+      <FeaturesCards />
+      <ContactUs />
     </div>
   );
 };

@@ -49,10 +49,7 @@ export default function Register({
     if (!inputPassword) {
       setIsPasswordError(true);
       setPasswordError("Password is required");
-    } else if (inputPassword.length < 8) {
-      setIsPasswordError(true);
-      setPasswordError("Password harus 8 karakter atau lebih");
-    } else {
+    }  else {
       setIsPasswordError(false);
       setPasswordError("");
     }
@@ -101,12 +98,12 @@ export default function Register({
     <div className="flex-1 flex flex-col w-full h-screen bg-background-secondary-light px-8 justify-center gap-2">
       <Container w={400} my={40}>
         <Title ta="center" className={classes.title}>
-          Selamat Datang!
+          ARventure
         </Title>
         <Text c="dimmed" size="sm" ta="center" mt={5}>
-          Apakah kamu sudah memiliki akun?{" "}
+          Have an Account?{" "}
           <Anchor size="sm" component="a" href="/login">
-            Masuk Sekarang!
+            Sign In
           </Anchor>
         </Text>
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">

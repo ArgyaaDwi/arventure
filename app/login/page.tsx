@@ -137,7 +137,7 @@
 //     </div>
 //   );
 // }
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -154,30 +154,34 @@ import {
   Container,
   Group,
   Button,
-} from '@mantine/core';
+} from "@mantine/core";
 import classes from "./authentication.module.css";
-import { SubmitButton } from "./submit-button";
+import { SubmitButton } from "@/components/submit-button";
 
-export default function LoginPage({ searchParams }: { searchParams: { message: string } }) {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: { message: string };
+}) {
   const router = useRouter();
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [isEmailError, setIsEmailError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
-  const [loginError, setLoginError] = useState('');
+  const [loginError, setLoginError] = useState("");
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputEmail = event.currentTarget.value;
 
     if (!inputEmail) {
       setIsEmailError(true);
-      setEmailError('Email is required');
-    } else if (!inputEmail.includes('@') || !inputEmail.includes('.')) {
+      setEmailError("Email is required");
+    } else if (!inputEmail.includes("@") || !inputEmail.includes(".")) {
       setIsEmailError(true);
-      setEmailError('Alamat email tidak valid');
+      setEmailError("Alamat email tidak valid");
     } else {
       setIsEmailError(false);
-      setEmailError('');
+      setEmailError("");
     }
   };
 
@@ -186,15 +190,12 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
 
     if (!inputPassword) {
       setIsPasswordError(true);
-      setPasswordError('Password is required');
-    } else if (inputPassword.length < 8) {
-      setIsPasswordError(true);
-      setPasswordError('Password harus 8 karakter atau lebih');
+      setPasswordError("Password is required");
     } else {
       setIsPasswordError(false);
-      setPasswordError('');
+      setPasswordError("");
     }
-  }
+  };
 
   const signIn = async (formData: FormData) => {
     const email = formData.get("email") as string;
@@ -207,11 +208,11 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
     });
 
     if (error) {
-      setLoginError('Could not authenticate user');
+      setLoginError("Could not authenticate user");
       return;
     }
 
-    router.push('/user');
+    router.push("/user");
     router.refresh();
   };
 
@@ -222,15 +223,13 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
           ARventure
         </Title>
         <Text c="dimmed" size="sm" ta="center" mt={5}>
-          Apakah Kamu sudah memiliki akun?{' '}
+          Don't have an account yet?{" "}
           <Anchor size="sm" component="a" href="/register" underline="never">
-            Daftar Sekarang!
+            Sign Up
           </Anchor>
         </Text>
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-          <form
-            className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
-          >
+          <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
             <label className="text-md" htmlFor="email">
               Email
             </label>
@@ -241,7 +240,11 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
               onChange={handleEmailChange}
               required
             />
-            {isEmailError && <Text color="red" size="sm">{emailError}</Text>}
+            {isEmailError && (
+              <Text color="red" size="sm">
+                {emailError}
+              </Text>
+            )}
             <label className="text-md" htmlFor="password">
               Password
             </label>
@@ -253,9 +256,13 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
               onChange={handlePasswordChange}
               required
             />
-            {isPasswordError && <Text color="red" size="sm">{passwordError}</Text>}
+            {isPasswordError && (
+              <Text color="red" size="sm">
+                {passwordError}
+              </Text>
+            )}
             <SubmitButton
-              className="bg-background-primary w-full font-semibold text-white rounded-md mt-4 px-4 py-2 text-foreground mb-2"
+              className="bg-background-secondary w-full font-semibold text-white rounded-md mt-4 px-4 py-2 text-foreground mb-2"
               pendingText="Signing In..."
               formAction={signIn}
             >
@@ -274,6 +281,6 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
           </form>
         </Paper>
       </Container>
-    </div >
+    </div>
   );
 }

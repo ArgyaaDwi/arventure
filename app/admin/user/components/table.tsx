@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
-  fetchAllUsers,
+  fetchAllUsers, fetchViewUsers
 //   deleteMountain,
 } from "@/utils/supabase/user/crud";
 import {
@@ -49,7 +49,21 @@ export default function UsersTable() {
 
     getUsers();
   }, []);
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchViewUsers();
+        setUsers(data);
+        setLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
 
+    getUsers();
+  }, []);
 //   useEffect(() => {
 //     const updateMountainsWithProvinceName = async () => {
 //       const updatedMountains = await Promise.all(
