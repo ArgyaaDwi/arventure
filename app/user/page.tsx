@@ -97,7 +97,6 @@ const UserPage = () => {
     <div>
       <ImageActionBanner />
       <FeaturesCards />
-      <ContactUs />
     </div>
   );
 };
