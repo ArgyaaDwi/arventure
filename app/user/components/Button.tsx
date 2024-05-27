@@ -1,11 +1,21 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
-import { Menu, Button, rem } from '@mantine/core';
-import { IconUserCircle, IconLogout } from '@tabler/icons-react';
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+import { Menu, Button, rem } from "@mantine/core";
+import { IconUserCircle, IconLogout } from "@tabler/icons-react";
 import { getCurrentUser, getUsers } from "@/utils/supabase/auth";
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 export default function Demo() {
   const [userName, setUserName] = useState<any | null>(null);
   const [name, setName] = useState<any | null>(null);
@@ -18,7 +28,7 @@ export default function Demo() {
         if (authUser) {
           const user = await getUsers(authUser.id);
           console.log("auth user", authUser);
-          console.log("user", user);  
+          console.log("user", user);
           setUserName(authUser.email);
           setName(user.name);
         }
@@ -50,9 +60,8 @@ export default function Demo() {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item>{name}</Menu.Item> 
-        <Menu.Item>{userName}</Menu.Item> 
-
+        <Menu.Item>{name}</Menu.Item>
+        <Menu.Item>{userName}</Menu.Item>
 
         <Menu.Item
           color="red"
@@ -67,4 +76,3 @@ export default function Demo() {
     </Menu>
   );
 }
-

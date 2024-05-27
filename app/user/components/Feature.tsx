@@ -9,45 +9,45 @@ import {
   rem,
   useMantineTheme,
 } from "@mantine/core";
-import { IconGauge, IconUser, IconCookie } from "@tabler/icons-react";
+import { IconGauge, IconUser, IconCookie, IconStar, IconMountain, IconUsers, IconFileInfo, IconLayout, IconTimeline } from "@tabler/icons-react";
 import classes from "../css/FeaturesCard.module.css";
 
 const mockdata = [
   {
-    title: "Extreme performance",
+    title: "Mountain Exploration",
     description:
-      "This dust is actually a powerful poison that will even make a pro wrestler sick, Regice cloaks itself with frigid air of -328 degrees Fahrenheit",
-    icon: IconGauge,
+      "Find the latest information about which mountains are currently open or closed.",
+    icon: IconMountain,
   },
   {
-    title: "Privacy focused",
+    title: "Mountain Management by Admin",
     description:
-      "People say it can run at the same speed as lightning striking, Its icy body is so cold, it will not melt even if it is immersed in magma",
-    icon: IconUser,
+      "Admins can easily add and manage mount status - open or closed - in seconds.",
+    icon: IconUsers,
   },
   {
-    title: "No third parties",
+    title: "Add to Wishlist with One Click",
     description:
-      "They’re popular, but they’re rare. Trainers who show them off recklessly may be targeted by thieves",
-    icon: IconCookie,
+      "Users can add their favorite mountains to their wishlist for future visits with just one click.",
+    icon: IconStar,
   },
   {
-    title: "Extreme performance",
+    title: "Complete Mountain Information",
     description:
-      "This dust is actually a powerful poison that will even make a pro wrestler sick, Regice cloaks itself with frigid air of -328 degrees Fahrenheit",
-    icon: IconGauge,
+      "Access complete and up-to-date information about the various mountains in it.",
+    icon: IconFileInfo,
+    
   },
   {
-    title: "Privacy focused",
+    title: "Friendly User Interface",
     description:
-      "People say it can run at the same speed as lightning striking, Its icy body is so cold, it will not melt even if it is immersed in magma",
-    icon: IconUser,
+      "Enjoy a seamless user experience with an interface specifically designed for ease of navigation and use.",
+    icon: IconLayout,
   },
   {
-    title: "No third parties",
-    description:
-      "They’re popular, but they’re rare. Trainers who show them off recklessly may be targeted by thieves",
-    icon: IconCookie,
+    title: "Plan Your Hike",
+    description: "offer an unforgettable climbing experience with us.",
+    icon: IconTimeline,
   },
 ];
 
@@ -91,7 +91,7 @@ export function FeaturesCards() {
         Every once in a while, you'll find a hidden gem among Indonesia's
         mountain trails. Our app provides all the information you need, from
         detailed trail guides to safety tips, ensuring your hiking adventure is
-        both safe and unforgettable. 
+        both safe and unforgettable.
       </Text>
 
       <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl" mt={50}>

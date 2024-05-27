@@ -1,12 +1,13 @@
 'use client';
 
 import { createClient } from "../client";
-export const addToWishlist = async (idUser: string, idMountain: string) => {
+//
+export const addToWishlist = async ( idMountain: string) => {
     const supabase = createClient();
 
   const { data, error } = await supabase
     .from('wishlist')
-    .insert([{ user_id: idUser, mountain_id: idMountain }]);
+    .insert([{ idMountain: idMountain }]);
 
   if (error) throw error;
   return data;
@@ -29,6 +30,17 @@ export const fetchWishlistByUser = async (idUser: string) => {
   
   return wishlist;
 };
+export const deleteWishlist = async (id: string) => {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from('wishlist')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
 export const fetchViewWishlist = async () => {
   const supabase = createClient();
   const { data: users, error } = await supabase.from('wishlist_with_mountain').select('*');
@@ -39,15 +51,4 @@ export const fetchViewWishlist = async () => {
   console.log("Fetched users:", users);
   console.log("Fetched total users:", users.length);
   return users;
-};
-export const deleteWishlit = async (id: string) => {
-  const supabase = createClient();
-  const { error } = await supabase
-    .from('wishlist')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    throw new Error(error.message);
-  }
 };

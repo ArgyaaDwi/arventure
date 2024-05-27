@@ -157,6 +157,7 @@ import {
 } from "@mantine/core";
 import classes from "./authentication.module.css";
 import { SubmitButton } from "@/components/submit-button";
+import swal from "sweetalert";
 
 export default function LoginPage({
   searchParams,
@@ -213,6 +214,7 @@ export default function LoginPage({
     }
 
     router.push("/user");
+    swal("Login berhasil!", " ","success");
     router.refresh();
   };
 

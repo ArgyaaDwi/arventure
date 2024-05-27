@@ -4,8 +4,11 @@ import {
   IconBookmark,
   IconColumnRemove,
   IconHeart,
+  IconRowRemove,
   IconShare,
+  IconStarOff,
   IconTrashFilled,
+  IconCheck,
 } from "@tabler/icons-react";
 import {
   Card,
@@ -19,13 +22,34 @@ import {
   useMantineTheme,
   rem,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import classes from "../css/BadgeCard.module.css";
-import { deleteWishlit } from "@/utils/supabase/clientsite/crud";
+import {
+  deleteWishlist,
+  addToWishlist,
+} from "@/utils/supabase/clientsite/crud";
 import { getCurrentUser, getUsers } from "@/utils/supabase/auth";
-import { fetchWishlistByUser, fetchViewWishlist } from "@/utils/supabase/clientsite/crud";
+import {
+  fetchWishlistByUser,
+  fetchViewWishlist,
+} from "@/utils/supabase/clientsite/crud";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
-export function Wishlist({wishlist}:any) {
-  const [ setWishlist] = useState<any>([]);
+export function Wishlist({ wishlist }: any) {
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
+
+  const [setWishlist] = useState<any>([]);
+  const [authUser, setAuthUser] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -42,9 +66,16 @@ export function Wishlist({wishlist}:any) {
   useEffect(() => {
     fetchData();
   }, []);
+
   const handleDeleteWishlist = async (wishlistId: string) => {
     try {
-      await deleteWishlit(wishlistId);
+      await deleteWishlist(wishlistId);
+      notifications.show({
+        title: "Berhasil!",
+        message: "Gunung berhasil dihapus dari wishlist!",
+        icon: checkIcon,
+        color: "green",
+      });
       window.location.href = "/user/wishlist";
       // Refresh data setelah menghapus provinsi
       const updatedProvinces = wishlist.filter(
@@ -52,25 +83,20 @@ export function Wishlist({wishlist}:any) {
       );
     } catch (err: any) {}
   };
-  const linkProps = {
-    href: "https://mantine.dev",
-    target: "_blank",
-    rel: "noopener noreferrer",
-  };
 
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
-        <a {...linkProps}>
+        {/* <a {...linkProps}>
           <Image src="https://i.imgur.com/Cij5vdL.png" height={180} />
-        </a>
+        </a> */}
       </Card.Section>
 
       {/* <Badge className={classes.rating} variant="gradient" gradient={{ from: 'yellow', to: 'red' }}>
           outstanding
         </Badge> */}
 
-      <Text className={classes.title} fw={500} component="a" {...linkProps}>
+      <Text className={classes.title} fw={500} component="a">
         {wishlist.id}{" "}
       </Text>
 
@@ -82,13 +108,26 @@ export function Wishlist({wishlist}:any) {
         <Center></Center>
 
         <Group gap={8} mr={0}>
-          <ActionIcon
-            className={classes.action}
-            onClick={() => handleDeleteWishlist(wishlist.id)}
-          >
-            {" "}
-            <IconTrashFilled style={{ width: rem(16), height: rem(16) }} />
-          </ActionIcon>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <IconStarOff style={{ width: rem(16), height: rem(16) }} />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Mau menghapus gunung ini dari wishlist?
+                </AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Batal</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleDeleteWishlist(wishlist.id)}
+                >
+                  Iya
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </Group>
       </Group>
     </Card>

@@ -55,6 +55,7 @@ const AddProvincePage = () => {
           </div> */}
           {error && <p>Error: {error}</p>}
           <br />
+
           <button
             type="button"
             className="bg-white text-black border border-black rounded-md px-4 py-2 my-3 mr-2"
@@ -62,6 +63,8 @@ const AddProvincePage = () => {
           >
             Back
           </button>
+
+
           <button
             type="submit"
             className="bg-black text-white rounded-md px-4 py-2 my-3 "

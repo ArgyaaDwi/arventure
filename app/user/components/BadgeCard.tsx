@@ -10,26 +10,77 @@ import {
   Center,
   rem,
 } from "@mantine/core";
+import { useState, useEffect } from "react";
 import { EyeIcon } from "lucide-react";
 import classes from "../css/BadgeCard.module.css";
+import {
+  addToWishlist,
+  fetchWishlistByUser,
+} from "@/utils/supabase/clientsite/crud";
+import { getCurrentUser } from "@/utils/supabase/auth";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { IconX, IconCheck } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 
 export function ArticleCard({ mountain }: { mountain: any }) {
-  const linkProps = {
-    href: "https://mantine.dev",
-    target: "_blank",
-    rel: "noopener noreferrer",
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
+  const linkProps = {};
+  const [setWishlist] = useState<any>([]);
+  const [authUser, setAuthUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchAuthUser = async () => {
+      const user = await getCurrentUser();
+      setAuthUser(user);
+    };
+
+    fetchAuthUser();
+  }, []);
+
+  const handleAddToWishlist = async (mountainId: any) => {
+    try {
+      await addToWishlist(mountainId);
+      notifications.show({
+        title: "Berhasil!",
+        message: "Gunung berhasil ditambahkan ke wishlist!",
+        icon: checkIcon,
+        color: "green",
+      });
+    } catch (err) {
+      notifications.show({
+        title: "Error",
+        message: "Gagal menambahkan gunung ke wishlist!",
+        icon: xIcon,
+        color: "red",
+      });
+      console.error("Error adding to wishlist:", err);
+    }
   };
 
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
         <a {...linkProps}>
+          {/* <div className="m-5"> */}
+
           <Image
             src={mountain.image || "/public/assets/images/default.jpg"}
             alt={mountain.name}
             height={20}
             width={50}
           />
+          {/* </div> */}
         </a>
       </Card.Section>
 
@@ -61,15 +112,26 @@ export function ArticleCard({ mountain }: { mountain: any }) {
       <Group justify="space-between" className={classes.footer}>
         <Center></Center>
         <Group gap={8} mr={0}>
-          {/* <ActionIcon className={classes.action}>
-            <EyeIcon style={{ width: rem(16), height: rem(16) }} />
-          </ActionIcon> */}
-          <ActionIcon className={classes.action}>
-            <IconHeart style={{ width: rem(16), height: rem(16) }} />
-          </ActionIcon>
-          {/* <ActionIcon className={classes.action}>
-            <IconMessage style={{ width: rem(16), height: rem(16) }} />
-          </ActionIcon> */}
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <IconHeart style={{ width: rem(16), height: rem(16) }} />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Mau menambahkan gunung ini ke wishlist?
+                </AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Batal</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleAddToWishlist(mountain.id)}
+                >
+                  Iya
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </Group>
       </Group>
     </Card>

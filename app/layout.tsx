@@ -1,9 +1,11 @@
 import { GeistSans } from "geist/font/sans";
-import '@mantine/core/styles.css';
-import { createTheme, MantineProvider } from '@mantine/core';
+import "@mantine/core/styles.css";
+import { createTheme, MantineProvider } from "@mantine/core";
 import { HeaderMegaMenu } from "@/components/Navbar";
-import { FooterLinks  } from "@/components/Footer";
+import { FooterLinks } from "@/components/Footer";
 import "./globals.css";
+import "@mantine/notifications/styles.css";
+import { Notifications } from "@mantine/notifications";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -21,21 +23,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-
-  
-      <html lang="en" className='{GeistSans.className}'>
+    <html lang="en" className="{GeistSans.className}">
       <body className="bg-background text-foreground">
         {/* <main className="flex flex-col items-center min-h-screen"> */}
         <MantineProvider>
+          <Notifications />
           {/* <HeaderMegaMenu/> */}
-          
+
           {children}
           {/* <FooterLinks /> */}
         </MantineProvider>
         {/* </main> */}
       </body>
     </html>
-  
-  
   );
 }
