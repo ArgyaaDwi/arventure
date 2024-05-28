@@ -2,9 +2,24 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchProvinceById, updateProvince } from "@/utils/supabase/city/crud";
-import { Card, Group, Text, TextInput } from "@mantine/core";
+import { Card, Group, Text, TextInput, rem } from "@mantine/core";
 import { Suspense } from "react";
+import { IconX, IconCheck } from "@tabler/icons-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { notifications } from "@mantine/notifications";
 const EditProvincePage = ({ searchParams }: { searchParams: any }) => {
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
   const router = useRouter();
 
   // console.log("search param", searchParams.provinceId);
@@ -30,16 +45,24 @@ const EditProvincePage = ({ searchParams }: { searchParams: any }) => {
     }
   }, [provinceId]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       await updateProvince(provinceId as string, provinceName);
-      // Menampilkan pesan sukses menggunakan alert
-      alert("Province updated successfully!");
-      // Mengarahkan pengguna kembali ke halaman /admin/city
+      notifications.show({
+        title: "Succes!",
+        message: "Successfully updated province!",
+        icon: checkIcon,
+        color: "green",
+      });
       router.push("/admin/city");
     } catch (err: any) {
-      setError(err.message);
+      notifications.show({
+        title: "Error",
+        message: "Gagal mengupdate data!",
+        icon: xIcon,
+        color: "red",
+      });
+      console.error("Error update province:", err);
     }
   };
 
@@ -55,7 +78,7 @@ const EditProvincePage = ({ searchParams }: { searchParams: any }) => {
             </Group>
           </Card.Section>
           <br />
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <div>
               <label htmlFor="provinceName">Province Name:</label>
               <TextInput
@@ -74,12 +97,32 @@ const EditProvincePage = ({ searchParams }: { searchParams: any }) => {
             >
               Back
             </button>
-            <button
-              type="submit"
-              className="bg-black text-white rounded-md px-4 py-2 my-3 "
-            >
-              Update
-            </button>{" "}
+
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <button
+                  type="submit"
+                  className="bg-black text-white rounded-md px-4 py-2 my-3 "
+                >
+                  Update
+                </button>{" "}
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Edit Confirmation</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {" "}
+                    Are you sure you want to update this province?{" "}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleSubmit}>
+                    Yes
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </form>
         </Card>
       </Suspense>

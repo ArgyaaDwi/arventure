@@ -18,7 +18,7 @@ export default function Mountain() {
   return (
     <div className="">
       <Card withBorder shadow="sm" radius="md">
-        <Card.Section withBorder inheritPadding >
+        <Card.Section withBorder inheritPadding>
           <Group justify="space-between">
             <Text fw={700} size="xl">
               Mountain Page

@@ -17,6 +17,21 @@ export const fetchAllMountains = async () => {
   
   return mountains;
 };
+export const fetchMountainWithProvince = async () => {
+  const supabase = createClient();
+
+  const { data: mountains, error } = await supabase.from('mountain_views').select('*');
+
+  if (error) {
+    console.error("Error fetching provinces:", error.message);
+    throw new Error(error.message);
+  }
+
+  console.log("Fetched mountains:", mountains);
+  console.log("Fetched total mountains:", mountains.length);
+  
+  return mountains;
+};
 export const addMountains = async (name: string, idProvince:string, description: string, image: string) => {
   const supabase = createClient();
   const { data, error } = await supabase.from('mountain').insert({ name, idProvince, description,image });

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import { BiEdit, BiSolidTrashAlt } from "react-icons/bi";
+import {
+  BiEdit,
+
+  BiSolidTrashAlt,
+} from "react-icons/bi";
+import { FaEye } from "react-icons/fa";
 
 import {
   Table,
@@ -15,8 +20,11 @@ import Image from "next/image";
 import {
   fetchAllMountains,
   deleteMountain,
+  fetchMountainWithProvince,
 } from "@/utils/supabase/mountain/crud";
 import { fetchProvinceById } from "@/utils/supabase/city/crud";
+import { Card, Group, Text, TextInput, rem } from "@mantine/core";
+
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -28,30 +36,30 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { IconX, IconCheck } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 
 export default function MountainTable() {
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
   const [mountains, setMountains] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-  const [selectedMountainId, setSelectedMountainId] = useState<string | null>(
-    null
-  );
+
   const router = useRouter();
 
-  const getMountains = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchAllMountains();
-      setMountains(data);
-      setLoading(false);
-    } catch (err: any) {
-      setError(err.message);
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const getMountains = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchAllMountains();
+        setMountains(data);
+        setLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
     getMountains();
   }, []);
 
@@ -80,23 +88,48 @@ export default function MountainTable() {
   const handleEditMountain = (id: string) => {
     router.push(`/admin/mountain/edit?id=${id}`);
   };
+  const handleDetailMountain = (id: string) => {
+    router.push(`/admin/mountain/detail?id=${id}`);
+  };
+  // const handleDeleteMountain = async (mountainId: string) => {
+  //   try {
+  //     if (selectedMountainId) {
+  //       await deleteMountain(selectedMountainId);
+  //       const updatedMountains = mountains.filter(
+  //         (mountain) => mountain.id !== selectedMountainId
+  //       );
+  //       setMountains(updatedMountains);
+  //       setIsAlertDialogOpen(false);
+  //       setSelectedMountainId(null);
+  //     }
 
-  const handleDeleteMountain = async () => {
+  //     window.location.reload;
+  //     console.log("diroute sini");
+  //   } catch (err: any) {
+  //     setError(err.message);
+  //   }
+  // };
+  const handleDeleteMountain = async (mountainId: string) => {
     try {
-      if (selectedMountainId) {
-        await deleteMountain(selectedMountainId);
-        const updatedMountains = mountains.filter(
-          (mountain) => mountain.id !== selectedMountainId
-        );
-        setMountains(updatedMountains);
-        setIsAlertDialogOpen(false);
-        setSelectedMountainId(null);
-      }
-
-      window.location.reload
-      console.log("diroute sini");
+      await deleteMountain(mountainId);
+      notifications.show({
+        title: "Succes!",
+        message: "Successfully deleted mountain!",
+        icon: checkIcon,
+        color: "green",
+      });
+      const updatedMountains = mountains.filter(
+        (mountain) => mountain.id !== mountainId
+      );
+      setMountains(updatedMountains);
     } catch (err: any) {
-      setError(err.message);
+      notifications.show({
+        title: "Error",
+        message: "Failed to delete mountain!",
+        icon: xIcon,
+        color: "red",
+      });
+      console.error("Error delete data:", err);
     }
   };
 
@@ -114,9 +147,7 @@ export default function MountainTable() {
             <TableHead className="border border-gray-300 text-black text-center">
               Province
             </TableHead>
-            {/* <TableHead className="border border-gray-300 text-black text-center">
-              Description
-            </TableHead> */}
+
             <TableHead className="border border-gray-300 text-black text-center">
               Image
             </TableHead>
@@ -154,6 +185,12 @@ export default function MountainTable() {
               <TableCell className="border border-gray-300 text-center">
                 <button
                   className="text-black hover:text-blue-700 mr-5"
+                  onClick={() => handleDetailMountain(mountain.id)}
+                >
+                  <FaEye size={25} />
+                </button>
+                <button
+                  className="text-black hover:text-blue-700 mr-5"
                   onClick={() => handleEditMountain(mountain.id)}
                 >
                   <BiEdit size={25} />
@@ -162,34 +199,30 @@ export default function MountainTable() {
                   <AlertDialogTrigger asChild>
                     <button
                       className="text-red-500 hover:text-red-700"
-                      onClick={() => {
-                        setSelectedMountainId(mountain.id);
-                        setIsAlertDialogOpen(true);
-                      }}
+                      // onClick={() => {
+                      //   handleDeleteMountain(mountain.id);
+                      // }}
                     >
                       <BiSolidTrashAlt size={25} />
                     </button>
                   </AlertDialogTrigger>
-                  {isAlertDialogOpen && (
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure want to delete this mountain?
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel
-                          onClick={() => setIsAlertDialogOpen(false)}
-                        >
-                          Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDeleteMountain}>
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  )}
+
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to delete this mountain?{" "}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleDeleteMountain(mountain.id)}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
                 </AlertDialog>
               </TableCell>
             </TableRow>

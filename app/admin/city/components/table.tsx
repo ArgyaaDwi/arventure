@@ -1,7 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { FaTrash, FaEdit } from "react-icons/fa";
 import { BiEdit, BiSolidTrashAlt } from "react-icons/bi";
+import { rem } from "@mantine/core";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { IconX, IconCheck } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 import {
   Table,
   TableBody,
@@ -13,6 +26,8 @@ import {
 import { useRouter } from "next/navigation";
 import { fetchAllProvinces, deleteProvince } from "@/utils/supabase/city/crud";
 export default function ProvinceTable() {
+  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
   const [provinces, setProvinces] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,13 +58,24 @@ export default function ProvinceTable() {
   const handleDeleteProvince = async (provinceId: string) => {
     try {
       await deleteProvince(provinceId);
-      // Refresh data setelah menghapus provinsi
+      notifications.show({
+        title: "Succes!",
+        message: "Successfully deleted province!",
+        icon: checkIcon,
+        color: "green",
+      });
       const updatedProvinces = provinces.filter(
         (province) => province.id !== provinceId
       );
       setProvinces(updatedProvinces);
     } catch (err: any) {
-      setError(err.message);
+      notifications.show({
+        title: "Error",
+        message: "Failed to delete province!",
+        icon: xIcon,
+        color: "red",
+      });
+      console.error("Error delete data:", err);
     }
   };
 
@@ -70,9 +96,6 @@ export default function ProvinceTable() {
             <TableHead className="border border-gray-300 text-black text-center">
               Actions
             </TableHead>
-          
-          
-            {/* Add more headers as necessary */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -94,14 +117,31 @@ export default function ProvinceTable() {
                 >
                   <BiEdit size={25} />
                 </button>
-                <button
-                  className="text-red-500 hover:text-red-700"
-                  onClick={() => handleDeleteProvince(province.id)}
-                >
-                  <BiSolidTrashAlt size={25}/>
-                </button>
+
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <button className="text-red-500 hover:text-red-700">
+                      <BiSolidTrashAlt size={25} />
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to delete this province?{" "}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleDeleteProvince(province.id)}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </TableCell>
-              {/* Add more cells as necessary */}
             </TableRow>
           ))}
         </TableBody>

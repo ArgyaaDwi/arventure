@@ -33,8 +33,8 @@ export default function City() {
           </Group>
         </Card.Section>
         <br />
-       
-          <TableDemo />
+
+        <TableDemo />
       </Card>
     </div>
   );
