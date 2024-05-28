@@ -1,5 +1,4 @@
-
-'use client';
+"use client";
 import DeployButton from "../components/DeployButton";
 import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
@@ -17,7 +16,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-
 import { fetchAllProvinces } from "@/utils/supabase/city/crud";
 
 import { LandPlotIcon, MountainIcon } from "lucide-react";
@@ -25,7 +23,6 @@ import { LandPlotIcon, MountainIcon } from "lucide-react";
 import React from "react";
 
 import { useState, useEffect } from "react";
-
 
 // export default async function Index() {
 //   const canInitSupabaseClient = () => {

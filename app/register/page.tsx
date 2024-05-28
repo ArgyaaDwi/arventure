@@ -16,6 +16,8 @@ import classes from "@/public/css/a/authentication.module.css";
 import { SubmitButton } from "@/components/submit-button";
 import { createClient } from "@/utils/supabase/client";
 import { redirect, useRouter } from "next/navigation";
+import swal from "sweetalert";
+
 import { useState } from "react";
 
 export default function Register({
@@ -49,7 +51,7 @@ export default function Register({
     if (!inputPassword) {
       setIsPasswordError(true);
       setPasswordError("Password is required");
-    }  else {
+    } else {
       setIsPasswordError(false);
       setPasswordError("");
     }
@@ -82,6 +84,7 @@ export default function Register({
     const { data: users, error: profileError } = await supabase
       .from("users")
       .insert({ id: userId, name: name, city: city });
+
     console.log(users);
     if (profileError) {
       return {
@@ -90,6 +93,7 @@ export default function Register({
       };
     }
     router.refresh();
+    // swal("Register Berhasil!", " ", "success");
 
     return { success: true };
   };

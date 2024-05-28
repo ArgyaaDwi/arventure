@@ -27,6 +27,7 @@ import {
 import { fetchAllProvinces } from "@/utils/supabase/city/crud";
 import { fetchAllMountains } from "@/utils/supabase/mountain/crud";
 import { fetchAllUsers } from "@/utils/supabase/user/crud";
+import { EmailBanner } from "@/components/admin/EmailBanner";
 export default function Admin() {
   const [provinces, setProvinces] = useState<any>([]);
   const [mountains, setMountains] = useState<any>([]);
@@ -79,10 +80,14 @@ export default function Admin() {
   }, []);
   return (
     <>
-      <h2 className="text-3xl font-bold tracking-tight my-4">Dashboard</h2>
+      {/* <h2 className="text-3xl font-bold tracking-tight my-4">Dashboard</h2> */}
+      <div className="mb-4">
+
+      <EmailBanner/>
+      </div>
 
       <div className="flex-1 space-y-4">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -120,10 +125,9 @@ export default function Admin() {
               <div className="text-2xl font-bold">{users.length}</div>
             </CardContent>
           </Card>
-       
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-          <Card className="col-span-4">
+          {/* <Card className="col-span-4">
             <CardHeader>
               <CardTitle>Overview</CardTitle>
             </CardHeader>
@@ -139,7 +143,7 @@ export default function Admin() {
             <CardContent>
               <RecentSales />
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </>

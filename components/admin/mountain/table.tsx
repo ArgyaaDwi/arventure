@@ -32,7 +32,9 @@ export default function MountainTable() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-  const [selectedMountainId, setSelectedMountainId] = useState<string | null>(null);
+  const [selectedMountainId, setSelectedMountainId] = useState<string | null>(
+    null
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -146,9 +148,7 @@ export default function MountainTable() {
                   <FaEdit />
                 </button>
                 <AlertDialog>
-                  <AlertDialogTrigger
-                    asChild
-                  >
+                  <AlertDialogTrigger asChild>
                     <button
                       className="text-red-500 hover:text-red-700"
                       onClick={() => {
@@ -162,10 +162,13 @@ export default function MountainTable() {
                   {isAlertDialogOpen && (
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete the mountain
-                          and remove its data from our servers.
+                          This action cannot be undone. This will permanently
+                          delete the mountain and remove its data from our
+                          servers.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -174,9 +177,7 @@ export default function MountainTable() {
                         >
                           Cancel
                         </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={handleDeleteMountain}
-                        >
+                        <AlertDialogAction onClick={handleDeleteMountain}>
                           Continue
                         </AlertDialogAction>
                       </AlertDialogFooter>

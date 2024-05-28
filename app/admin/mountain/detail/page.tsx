@@ -9,7 +9,7 @@ interface DetailMountain {
 }
 
 const DetailMountainPage: React.FC<DetailMountain> = ({ searchParams }) => {
-  const router = useRouter();   
+  const router = useRouter();
   const [name, setMountainName] = useState("");
   const [description, setDescription] = useState("");
   const [idProvince, setIdProvince] = useState("");
@@ -63,15 +63,7 @@ const DetailMountainPage: React.FC<DetailMountain> = ({ searchParams }) => {
     <div>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section>
-          <Image
-            src={
-              image 
-              
-            }
-            alt={name}
-            height={160}
-            fit="cover"
-          />
+          <Image src={image} alt={name} height={160} fit="cover" />
         </Card.Section>
 
         <Group justify="space-between" mt="md" mb="xs">

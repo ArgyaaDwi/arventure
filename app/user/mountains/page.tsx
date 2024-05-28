@@ -47,8 +47,13 @@ const Page = () => {
     getMountains();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '5vh' }}>
+        <p style={{ textAlign: 'center' }}>Loading...</p>
+      </div>
+    );
+  }  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className={classes.gridoi}>

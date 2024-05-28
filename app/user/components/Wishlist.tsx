@@ -9,6 +9,7 @@ import {
   IconStarOff,
   IconTrashFilled,
   IconCheck,
+  IconCross,
 } from "@tabler/icons-react";
 import {
   Card,
@@ -21,6 +22,7 @@ import {
   Avatar,
   useMantineTheme,
   rem,
+  Grid,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import classes from "../css/BadgeCard.module.css";
@@ -31,6 +33,7 @@ import {
 import { getCurrentUser, getUsers } from "@/utils/supabase/auth";
 import {
   fetchWishlistByUser,
+  fetchWishlistByUsers,
   fetchViewWishlist,
 } from "@/utils/supabase/clientsite/crud";
 import {
@@ -45,30 +48,37 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export function Wishlist({ wishlist }: any) {
+export function Wishlist() {
   const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
+  const xIcon = <IconCross style={{ width: rem(20), height: rem(20) }} />;
 
-  const [setWishlist] = useState<any>([]);
+  const [wishlist, setWishlist] = useState<any>([]);
   const [authUser, setAuthUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Tambahkan state loading
 
-  const fetchData = async () => {
+  const fetchDatas = async () => {
     try {
       const authUser = await getCurrentUser();
       if (authUser) {
-        const wishlistData = await fetchWishlistByUser(authUser.id);
-        console.log("Wishlist fetched:", wishlistData[0].id);
+        const wishlistData = await fetchViewWishlist();
+        console.log("Wishlist fetched:", wishlistData);
         setWishlist(wishlistData);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false); // Setelah selesai fetching, set loading menjadi false
     }
   };
+
   useEffect(() => {
-    fetchData();
+    fetchDatas();
   }, []);
 
   const handleDeleteWishlist = async (wishlistId: string) => {
     try {
+      console.log("Deleting wishlist item with id:", wishlistId);
+
       await deleteWishlist(wishlistId);
       notifications.show({
         title: "Berhasil!",
@@ -77,59 +87,81 @@ export function Wishlist({ wishlist }: any) {
         color: "green",
       });
       window.location.href = "/user/wishlist";
-      // Refresh data setelah menghapus provinsi
-      const updatedProvinces = wishlist.filter(
-        (wishlist: any) => wishlist.id !== wishlistId
+
+      const updatedWishlist = wishlist.filter(
+        (item: any) => item.id !== wishlistId
       );
-    } catch (err: any) {}
+      // setWishlist(updatedWishlist);
+    } catch (err) {
+      notifications.show({
+        title: "Error",
+        message: "Gagal menghapus gunung dari wishlist!",
+        icon: xIcon,
+        color: "red",
+      });
+      console.error("Error deleting wishlist item:", err);
+    }
   };
 
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "30vh",
+        }}
+      >
+        <p style={{ textAlign: "center" }}>Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <Card withBorder radius="md" className={classes.card}>
-      <Card.Section>
-        {/* <a {...linkProps}>
-          <Image src="https://i.imgur.com/Cij5vdL.png" height={180} />
-        </a> */}
-      </Card.Section>
-
-      {/* <Badge className={classes.rating} variant="gradient" gradient={{ from: 'yellow', to: 'red' }}>
-          outstanding
-        </Badge> */}
-
-      <Text className={classes.title} fw={500} component="a">
-        {wishlist.id}{" "}
-      </Text>
-
-      <Text fz="sm" c="dimmed" lineClamp={4}>
-        {wishlist.idMountain}
-      </Text>
-
-      <Group justify="space-between" className={classes.footer}>
-        <Center></Center>
-
-        <Group gap={8} mr={0}>
-          <AlertDialog>
-            <AlertDialogTrigger>
-              <IconStarOff style={{ width: rem(16), height: rem(16) }} />
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Mau menghapus gunung ini dari wishlist?
-                </AlertDialogTitle>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Batal</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => handleDeleteWishlist(wishlist.id)}
-                >
-                  Iya
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </Group>
-      </Group>
-    </Card>
+    <Grid>
+      {wishlist.map((item: any, index: number) => (
+        <Grid.Col key={item.id} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
+          <Card withBorder radius="md" className={classes.card}>
+            <Card.Section>
+              <Image src={item.gambar} height={180} />
+            </Card.Section>
+            <Text className={classes.title} fw={500}>
+              {item.mountain_name}
+            </Text>
+            <Text fz="sm" c="dimmed" lineClamp={4}>
+              {item.description}
+            </Text>
+            <Group justify="space-between" className={classes.footer}>
+              <Center></Center>
+              <Group gap={8} mr={0}>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <IconStarOff style={{ width: rem(16), height: rem(16) }} />
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Konfirmasi Hapus </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Apakah anda ingin menghapus {item.mountain_name} dari
+                        wishlist?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Batal</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleDeleteWishlist(item.id)}
+                      >
+                        Iya
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </Group>
+            </Group>
+          </Card>
+        </Grid.Col>
+      ))}
+    </Grid>
   );
 }

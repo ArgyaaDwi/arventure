@@ -52,7 +52,7 @@ const EditMountainPage: React.FC<EditMountainPageProps> = ({
   const [provinces, setProvinces] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const [selectedProvince, setSelectedProvince] = useState<any>("");
+  const [selectedProvince, setSelectedProvince] = useState<any>(null);
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
@@ -124,7 +124,7 @@ const EditMountainPage: React.FC<EditMountainPageProps> = ({
         isOpen!
       );
       notifications.show({
-        title: "Succes!",
+        title: "Success!",
         message: "Successfully updated mountain!",
         icon: checkIcon,
         color: "green",
@@ -133,11 +133,11 @@ const EditMountainPage: React.FC<EditMountainPageProps> = ({
     } catch (err: any) {
       notifications.show({
         title: "Error",
-        message: "Gagal mengupdate data!",
+        message: "Failed to update data!",
         icon: xIcon,
         color: "red",
       });
-      console.error("Error update mmountain:", err);
+      console.error("Error updating mountain:", err);
     }
   };
 
@@ -166,8 +166,10 @@ const EditMountainPage: React.FC<EditMountainPageProps> = ({
             <label htmlFor="idProvince">Province:</label>
             <Select
               data={provinces}
-              value={selectedProvince.value}
-              onChange={(value) => setSelectedProvince(value)}
+              value={selectedProvince?.value || ""}
+              onChange={(value) =>
+                setSelectedProvince(provinces.find((p) => p.value === value))
+              }
             />
           </div>
           <div>

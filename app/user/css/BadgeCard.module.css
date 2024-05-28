@@ -9,6 +9,7 @@
     top: var(--mantine-spacing-xs);
     right: rem(12px);
     pointer-events: none;
+    padding: 15px;
   }
   
   .title {

@@ -1,5 +1,5 @@
 "use client";
-import { IconHeart, IconMessage } from "@tabler/icons-react";
+import { IconHeart, IconMessage, IconStar } from "@tabler/icons-react";
 import {
   Card,
   Image,
@@ -53,21 +53,57 @@ export function ArticleCard({ mountain }: { mountain: any }) {
       await addToWishlist(mountainId);
       notifications.show({
         title: "Berhasil!",
-        message: "Gunung berhasil ditambahkan ke wishlist!",
+        message: "Gunung  berhasil ditambahkan ke wishlist!",
         icon: checkIcon,
         color: "green",
       });
     } catch (err) {
       notifications.show({
-        title: "Error",
-        message: "Gagal menambahkan gunung ke wishlist!",
+        title: "Gagal",
+        message: "Gagal menambahkan gunung karena sudah ada di wishlist!",
         icon: xIcon,
         color: "red",
       });
       console.error("Error adding to wishlist:", err);
     }
   };
+  // const handleAddToWishlist = async (mountainId: any) => {
+  //   try {
+  //     // Fetch wishlist items for the current user
+  //     const wishlistData = await fetchWishlistByUser(authUser);
 
+  //     // Check if the mountain is already in the wishlist
+  //     const isAlreadyInWishlist = wishlistData.some(
+  //       (item: any) => item.idMountain === mountainId
+  //     );
+
+  //     if (isAlreadyInWishlist) {
+  //       notifications.show({
+  //         title: "Gunung Sudah Ada",
+  //         message: "Gunung ini sudah ada di wishlist Anda.",
+  //         icon: xIcon,
+  //         color: "yellow",
+  //       });
+  //     } else {
+  //       // Add to wishlist
+  //       await addToWishlist(mountainId);
+  //       notifications.show({
+  //         title: "Berhasil!",
+  //         message: "Gunung berhasil ditambahkan ke wishlist!",
+  //         icon: checkIcon,
+  //         color: "green",
+  //       });
+  //     }
+  //   } catch (err) {
+  //     notifications.show({
+  //       title: "Error",
+  //       message: "Gagal menambahkan gunung ke wishlist!",
+  //       icon: xIcon,
+  //       color: "red",
+  //     });
+  //     console.error("Error adding to wishlist:", err);
+  //   }
+  // };
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
@@ -114,13 +150,14 @@ export function ArticleCard({ mountain }: { mountain: any }) {
         <Group gap={8} mr={0}>
           <AlertDialog>
             <AlertDialogTrigger>
-              <IconHeart style={{ width: rem(16), height: rem(16) }} />
+              <IconStar style={{ width: rem(16), height: rem(16) }} />
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Mau menambahkan gunung ini ke wishlist?
-                </AlertDialogTitle>
+                <AlertDialogTitle>Konfirmasi Wishlist</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Apakah anda ingin menambahkan {mountain.name} ke wishlist?
+                </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Batal</AlertDialogCancel>

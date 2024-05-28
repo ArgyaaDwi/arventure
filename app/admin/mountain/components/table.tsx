@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import {
-  BiEdit,
-
-  BiSolidTrashAlt,
-} from "react-icons/bi";
+import { BiEdit, BiSolidTrashAlt } from "react-icons/bi";
 import { FaEye } from "react-icons/fa";
 
 import {
@@ -118,6 +114,8 @@ export default function MountainTable() {
         icon: checkIcon,
         color: "green",
       });
+      window.location.reload;
+
       const updatedMountains = mountains.filter(
         (mountain) => mountain.id !== mountainId
       );
@@ -174,7 +172,7 @@ export default function MountainTable() {
               {/* <TableCell className="border border-gray-300 text-center">
                 {mountain.description}
               </TableCell> */}
-              <TableCell className="border border-gray-300 text-center">
+              <TableCell className="border border-gray-300 text-center flex justify-center  ">
                 <Image
                   src={mountain.image}
                   alt={mountain.name}
@@ -182,6 +180,7 @@ export default function MountainTable() {
                   height={100}
                 />
               </TableCell>
+
               <TableCell className="border border-gray-300 text-center">
                 <button
                   className="text-black hover:text-blue-700 mr-5"
