@@ -93,7 +93,7 @@ export default function Register({
       };
     }
     router.refresh();
-    // swal("Register Berhasil!", " ", "success");
+    swal("Register Berhasil!", " ", "success");
 
     return { success: true };
   };
