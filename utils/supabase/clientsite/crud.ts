@@ -1,13 +1,17 @@
 'use client';
+import { getCurrentUser } from "../auth";
 import { createClient } from "../client";
 
 //Tambah ke wishlist bro
 export const addToWishlist = async (idMountain: string) => {
+  
   const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser()
   // Cek apakah gunung sudah ada di wishlist
   const { data: existingWishlist, error: existingError } = await supabase
     .from('wishlist')
     .select('*')
+    .eq('idUser', user!.id)
     .eq('idMountain', idMountain);
 
   if (existingError) {
