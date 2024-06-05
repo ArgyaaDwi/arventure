@@ -76,12 +76,7 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+       
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link href='#' onClick={handleLogout}>Log out</Link>
